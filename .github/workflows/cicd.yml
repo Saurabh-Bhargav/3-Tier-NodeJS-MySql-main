@@ -1,0 +1,28 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Adjust to your default branch or other branches as needed
+
+jobs:
+  build:
+    runs-on: self-hosted  # Use the self-hosted runner
+
+    steps:
+      - name: Install dependencies
+        run: |
+          cd /home/ubuntu-srv/GIT/3-Tier-NodeJS-MySql-main/server
+          npm install
+          cd ../client
+          npm install
+
+      - name: Build client
+        run: |
+          cd /home/ubuntu-srv/GIT/3-Tier-NodeJS-MySql-main/client
+          npm run build
+
+      - name: Restart server
+        run: |
+          cd /home/ubuntu-srv/GIT/3-Tier-NodeJS-MySql-main/server
+          pm2 restart 0  # PM2 for process management
